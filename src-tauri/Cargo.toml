@@ -1,6 +1,6 @@
 [package]
 name = "droid-provider"
-version = "1.0.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["ProxyCast Team"]
 description = "Droid Provider Plugin for ProxyCast - Factory.ai Droid 平台支持"

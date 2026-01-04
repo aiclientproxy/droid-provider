@@ -1,6 +1,6 @@
 {
   "name": "droid-provider",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Droid Provider - Factory.ai Droid 平台支持，支持 WorkOS OAuth 和 API Key 认证",
   "author": "ProxyCast Team",
   "homepage": "https://github.com/aiclientproxy/droid-provider",
