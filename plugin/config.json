@@ -1,0 +1,35 @@
+{
+  "enabled": true,
+  "timeout_ms": 60000,
+  "settings": {
+    "workos": {
+      "client_id": "client_01HNM792M5G5G1A2THWPXKFMXB",
+      "token_url": "https://api.workos.com/user_management/authenticate"
+    },
+    "factory": {
+      "api_base_url": "https://api.factory.ai/api/llm",
+      "cli_org_url": "https://app.factory.ai/api/cli/org",
+      "user_agent": "factory-cli/0.32.1"
+    },
+    "endpoints": {
+      "anthropic": "/a/v1/messages",
+      "openai": "/o/v1/responses",
+      "comm": "/o/v1/chat/completions"
+    },
+    "token_refresh": {
+      "auto_refresh": true,
+      "refresh_interval_hours": 6,
+      "token_valid_hours": 8,
+      "max_retry": 3
+    },
+    "health_check": {
+      "enabled": true,
+      "interval_seconds": 300,
+      "unhealthy_threshold": 3
+    },
+    "encryption": {
+      "algorithm": "aes-256-cbc",
+      "salt": "droid-account-salt"
+    }
+  }
+}

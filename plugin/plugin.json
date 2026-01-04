@@ -1,0 +1,76 @@
+{
+  "name": "droid-provider",
+  "version": "1.0.0",
+  "description": "Droid Provider - Factory.ai Droid 平台支持，支持 WorkOS OAuth 和 API Key 认证",
+  "author": "ProxyCast Team",
+  "homepage": "https://github.com/aiclientproxy/droid-provider",
+  "license": "MIT",
+
+  "plugin_type": "oauth_provider",
+  "entry": "droid-provider-cli",
+  "min_proxycast_version": "1.0.0",
+
+  "provider": {
+    "id": "droid",
+    "display_name": "Droid (Factory.ai)",
+    "target_protocol": "anthropic",
+    "supported_models": ["claude-*", "gpt-*"],
+    "auth_types": ["oauth", "api_key"],
+    "credential_schemas": {
+      "oauth": {
+        "type": "object",
+        "properties": {
+          "access_token": { "type": "string", "title": "Access Token" },
+          "refresh_token": { "type": "string", "title": "Refresh Token" },
+          "expires_at": { "type": "string", "title": "Expires At" },
+          "organization_id": { "type": "string", "title": "Organization ID" },
+          "user_id": { "type": "string", "title": "User ID" },
+          "owner_email": { "type": "string", "title": "Owner Email" }
+        },
+        "required": ["refresh_token"]
+      },
+      "api_key": {
+        "type": "object",
+        "properties": {
+          "api_keys": {
+            "type": "array",
+            "items": { "type": "string" },
+            "title": "API Keys"
+          }
+        },
+        "required": ["api_keys"]
+      }
+    }
+  },
+
+  "binary": {
+    "binary_name": "droid-provider-cli",
+    "github_owner": "aiclientproxy",
+    "github_repo": "droid-provider",
+    "platform_binaries": {
+      "macos-arm64": "droid-provider-aarch64-apple-darwin",
+      "macos-x64": "droid-provider-x86_64-apple-darwin",
+      "linux-x64": "droid-provider-x86_64-unknown-linux-gnu",
+      "linux-arm64": "droid-provider-aarch64-unknown-linux-gnu",
+      "windows-x64": "droid-provider-x86_64-pc-windows-msvc.exe"
+    },
+    "checksum_file": "checksums.txt"
+  },
+
+  "ui": {
+    "surfaces": ["oauth_providers"],
+    "icon": "Bot",
+    "title": "Droid Provider",
+    "entry": "dist/index.js",
+    "styles": "dist/styles.css",
+    "default_width": 900,
+    "default_height": 700,
+    "permissions": [
+      "database:read",
+      "database:write",
+      "http:request",
+      "crypto:encrypt",
+      "shell:open"
+    ]
+  }
+}

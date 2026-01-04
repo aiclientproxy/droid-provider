@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+target/
+
+# Build outputs
+plugin/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Rust
+Cargo.lock
+**/*.rs.bk
+
+# TypeScript
+*.tsbuildinfo
