@@ -4,7 +4,6 @@
  * 显示单个 Droid 凭证的信息和操作按钮
  */
 
-import React from "react";
 import {
   Button,
   Badge,
@@ -48,8 +47,8 @@ function getAuthTypeIcon(authType: string) {
 /**
  * 格式化日期
  */
-function formatDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return "-";
+function formatDate(dateStr: unknown): string {
+  if (!dateStr || typeof dateStr !== "string") return "-";
   try {
     const date = new Date(dateStr);
     return date.toLocaleString("zh-CN", {
@@ -87,17 +86,24 @@ export function CredentialCard({
   refreshingToken,
 }: CredentialCardProps) {
   const data = credential.credential_data || {};
-  const authType = data.auth_type || "oauth";
-  const endpointType = data.endpoint_type || "anthropic";
+  const authType = String(data.auth_type || "oauth");
+  const endpointType = String(data.endpoint_type || "anthropic");
   const isHealthy = !credential.is_disabled && credential.health_status !== "unhealthy";
   const AuthIcon = getAuthTypeIcon(authType);
 
   // API Key 数量统计
-  const apiKeys = data.api_keys || [];
-  const activeKeyCount = Array.isArray(apiKeys)
-    ? apiKeys.filter((k: { status?: string }) => k.status === "active").length
-    : 0;
-  const totalKeyCount = Array.isArray(apiKeys) ? apiKeys.length : 0;
+  const apiKeys = Array.isArray(data.api_keys) ? data.api_keys : [];
+  const activeKeyCount = apiKeys.filter(
+    (k: unknown) => typeof k === "object" && k !== null && (k as { status?: string }).status === "active"
+  ).length;
+  const totalKeyCount = apiKeys.length;
+
+  // 提取显示字段
+  const ownerEmail = typeof data.owner_email === "string" ? data.owner_email : "";
+  const organizationId = typeof data.organization_id === "string" ? data.organization_id : "";
+  const userId = typeof data.user_id === "string" ? data.user_id : "";
+  const expiresAt = typeof data.expires_at === "string" ? data.expires_at : null;
+  const lastRefresh = typeof data.last_refresh === "string" ? data.last_refresh : null;
 
   return (
     <Card className={`${credential.is_disabled ? "opacity-60" : ""}`}>
@@ -145,31 +151,31 @@ export function CredentialCard({
         {/* 凭证信息 */}
         <div className="grid grid-cols-2 gap-4 text-sm">
           {/* 邮箱 (OAuth) */}
-          {data.owner_email && (
+          {ownerEmail.length > 0 && (
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">邮箱:</span>
-              <span>{data.owner_email}</span>
+              <span>{ownerEmail}</span>
             </div>
           )}
 
           {/* 组织 ID (OAuth) */}
-          {data.organization_id && (
+          {organizationId.length > 0 && (
             <div className="flex items-center gap-2">
               <Building className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">组织:</span>
-              <span className="truncate">{data.organization_id}</span>
+              <span className="truncate">{organizationId}</span>
             </div>
           )}
 
           {/* 用户 ID (OAuth) */}
-          {data.user_id && (
+          {userId ? (
             <div className="flex items-center gap-2">
               <User className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">用户:</span>
-              <span className="truncate">{data.user_id}</span>
+              <span className="truncate">{userId}</span>
             </div>
-          )}
+          ) : null}
 
           {/* API Key 数量 (API Key) */}
           {authType === "api_key" && (
@@ -183,20 +189,20 @@ export function CredentialCard({
           )}
 
           {/* 过期时间 (OAuth) */}
-          {data.expires_at && (
+          {expiresAt && (
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">过期:</span>
-              <span>{formatDate(data.expires_at)}</span>
+              <span>{formatDate(expiresAt)}</span>
             </div>
           )}
 
           {/* 最后刷新 */}
-          {data.last_refresh && (
+          {lastRefresh && (
             <div className="flex items-center gap-2">
               <RefreshCw className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">刷新:</span>
-              <span>{formatDate(data.last_refresh)}</span>
+              <span>{formatDate(lastRefresh)}</span>
             </div>
           )}
         </div>

@@ -1,6 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
+
+const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
+const proxycastComponentsPath = path.resolve(__dirname, '../proxycast/src/lib/plugin-components');
+const hasLocalComponents = fs.existsSync(proxycastComponentsPath);
 
 export default defineConfig({
   plugins: [react()],
@@ -10,10 +15,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@proxycast/plugin-components': path.resolve(
-        __dirname,
-        '../proxycast/src/lib/plugin-components'
-      ),
+      ...(hasLocalComponents && !isCI ? {
+        '@proxycast/plugin-components': proxycastComponentsPath,
+      } : {}),
     },
   },
   build: {
@@ -25,11 +29,7 @@ export default defineConfig({
       fileName: () => 'index.js',
     },
     rollupOptions: {
-      external: [
-        'react',
-        'react-dom',
-        '@proxycast/plugin-components',
-      ],
+      external: ['react', 'react-dom', '@proxycast/plugin-components'],
       output: {
         globals: {
           'react': 'React',
