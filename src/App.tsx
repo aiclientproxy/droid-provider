@@ -89,8 +89,15 @@ export function DroidProviderApp(_props: DroidProviderAppProps) {
     try {
       setLoading(true);
       setError(null);
-      const list = await providerPoolApi.getCredentials("droid");
-      setCredentials(list);
+      // 注意：主应用目前不支持 "droid" provider type
+      // 这里暂时返回空列表，等待后端支持
+      try {
+        const list = await providerPoolApi.getCredentials("droid" as any);
+        setCredentials(list);
+      } catch {
+        // 如果 API 不支持，显示空列表而不是错误
+        setCredentials([]);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "加载凭证失败");
     } finally {
