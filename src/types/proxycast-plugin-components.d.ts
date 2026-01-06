@@ -38,8 +38,6 @@ declare module "@proxycast/plugin-components" {
   export const Modal: FC<ModalProps>;
 
   // 表单组件
-  export interface DroidFormStandaloneProps { authType?: "oauth" | "api_key"; onSuccess?: () => void; onCancel?: () => void; }
-  export const DroidFormStandalone: FC<DroidFormStandaloneProps>;
   export interface UpdateCredentialRequest { display_name?: string; is_disabled?: boolean; priority?: number; tags?: string[]; }
   export interface EditCredentialModalProps { credential: CredentialDisplay | null; isOpen: boolean; onClose: () => void; onEdit: (uuid: string, request: UpdateCredentialRequest) => Promise<void>; }
   export const EditCredentialModal: FC<EditCredentialModalProps>;
@@ -57,6 +55,8 @@ declare module "@proxycast/plugin-components" {
   export const Edit: FC<IconProps>;
   export const Trash2: FC<IconProps>;
   export const Copy: FC<IconProps>;
+  export const Download: FC<IconProps>;
+  export const Upload: FC<IconProps>;
   export const RefreshCw: FC<IconProps>;
   export const RotateCcw: FC<IconProps>;
   export const Loader2: FC<IconProps>;
@@ -74,7 +74,8 @@ declare module "@proxycast/plugin-components" {
   export const User: FC<IconProps>;
   export const Users: FC<IconProps>;
   export const Building: FC<IconProps>;
-  export const Bot: FC<IconProps>;
+  export const Cloud: FC<IconProps>;
+  export const Server: FC<IconProps>;
 
 
   // 类型定义

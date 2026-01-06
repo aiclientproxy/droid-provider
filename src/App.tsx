@@ -14,8 +14,6 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-  // Droid 专用组件
-  DroidFormStandalone,
   EditCredentialModal,
   // 图标
   Plus,
@@ -25,7 +23,7 @@ import {
   AlertCircle,
   Key,
   KeyRound,
-  Bot,
+  Cloud,
   // 工具
   toast,
   // Provider Pool API
@@ -36,6 +34,7 @@ import {
   type PluginSDK,
 } from "@proxycast/plugin-components";
 import { CredentialCard } from "./components/CredentialCard";
+import { DroidAddForm } from "./components/DroidAddForm";
 
 /**
  * 认证方式类型
@@ -360,7 +359,7 @@ export function DroidProviderApp(_props: DroidProviderAppProps) {
       {/* 凭证列表 */}
       {credentials.length === 0 ? (
         <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-xl text-muted-foreground">
-          <Bot className="h-12 w-12 mb-4 opacity-50" />
+          <Cloud className="h-12 w-12 mb-4 opacity-50" />
           <p className="text-lg font-medium mb-1">暂无凭证</p>
           <p className="text-sm mb-4">点击"添加凭证"开始配置 Factory.ai Droid</p>
           <Button onClick={() => setIsAddModalOpen(true)}>
@@ -389,7 +388,7 @@ export function DroidProviderApp(_props: DroidProviderAppProps) {
       )}
 
       {/* 添加凭证模态框 */}
-      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} maxWidth="max-w-xl">
+      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} maxWidth="max-w-md">
         <div className="p-6">
           <h3 className="text-lg font-semibold mb-4">添加 Droid 凭证</h3>
 
@@ -406,7 +405,7 @@ export function DroidProviderApp(_props: DroidProviderAppProps) {
 
             {/* OAuth 表单 */}
             <TabsContent value="oauth">
-              <DroidFormStandalone
+              <DroidAddForm
                 authType="oauth"
                 onSuccess={handleAddSuccess}
                 onCancel={() => setIsAddModalOpen(false)}
@@ -415,7 +414,7 @@ export function DroidProviderApp(_props: DroidProviderAppProps) {
 
             {/* API Key 表单 */}
             <TabsContent value="api_key">
-              <DroidFormStandalone
+              <DroidAddForm
                 authType="api_key"
                 onSuccess={handleAddSuccess}
                 onCancel={() => setIsAddModalOpen(false)}

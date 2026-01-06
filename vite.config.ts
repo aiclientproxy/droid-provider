@@ -29,7 +29,13 @@ export default defineConfig({
       fileName: () => 'index.js',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', '@proxycast/plugin-components'],
+      external: [
+        'react',
+        'react-dom',
+        '@proxycast/plugin-components',
+        '@tauri-apps/plugin-dialog',
+        '@tauri-apps/api/core',
+      ],
       output: {
         globals: {
           'react': 'React',
