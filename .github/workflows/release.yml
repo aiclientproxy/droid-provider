@@ -126,6 +126,16 @@ jobs:
           rm -f *.sha256 checksums.txt.tmp
           ls -la
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build UI
+        run: |
+          npm ci
+          npm run build
+
       - name: Package plugin
         run: |
           # 创建插件包目录
@@ -135,13 +145,19 @@ jobs:
           cp plugin/plugin.json plugin-package/
           cp plugin/config.json plugin-package/
 
-          # 打包为 zip
+          # 复制 UI 构建产物
+          mkdir -p plugin-package/dist
+          cp -r plugin/dist/* plugin-package/dist/
+
+          # 打包为 zip（包含 dist 目录）
           cd plugin-package
-          zip -j ../release/droid-provider-plugin.zip plugin.json config.json
+          zip -r ../release/droid-provider-plugin.zip plugin.json config.json dist/
           cd ..
 
           # 显示打包结果
           ls -la release/
+          echo "Plugin package contents:"
+          unzip -l release/droid-provider-plugin.zip
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
